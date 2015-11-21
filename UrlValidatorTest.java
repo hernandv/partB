@@ -44,22 +44,16 @@ public class UrlValidatorTest extends TestCase {
    {
 	   System.out.println("Manual Tests: ");
 	   UrlValidator urlVal = new UrlValidator();
-	   //Should are return true
-	   if(urlVal.isValid("http://www.amazon.com") == false){
-		   System.out.println("http://www.amazon.com returned false.");   
-	   }
-	   if(urlVal.isValid("http://www.amazon.org:22") == false){
-		   System.out.println("http://www.amazon.org:22 returned false.");   
-	   }
-	   if(urlVal.isValid("http://adasd.amazon.com/test1") == false){
-		   System.out.println("http://adasd.amazon.com/test1 returned false.");   
-	   }
-	   if(urlVal.isValid("http://www.amazon.zw") == false){//Fails.  Saw the country list in buggy version is incomplete. Line 248 DomainValidator.java
-		   System.out.println("http://www.amazon.zw returned false.");   
-	   }
-	   if(urlVal.isValid("http://www.amazon.gov?action=view") == false){//Lucky catch.  Line 446 UrlValidator.java  return !QUERY_PATTERN.matcher(query).matches(); should be return QUERY_PATTERN.matcher(query).matches(); 
-		   System.out.println("http://www.amazon.gov?action=view returned false.");   
-	   }
+	   //Should all return true
+	   assertTrue(urlVal.isValid("http://www.amazon.com"));
+	   assertTrue(urlVal.isValid("http://www.amazon.org:22"));
+	   assertTrue(urlVal.isValid("http://adasd.amazon.com/test1"));
+	   assertFalse(urlVal.isValid("http://www.amazon.zw")); 
+	 //Lucky catch.  
+	 //Line 446 UrlValidator.java  return !QUERY_PATTERN.matcher(query).matches(); 
+	 //should be return QUERY_PATTERN.matcher(query).matches(); 
+	 //
+	 assertTrue(urlVal.isValid("http://www.amazon.gov?action=view"));
    }
    
    ////////////////////////bad query validator makes all these fail.  Comment out + validQuery in for loops to check for other errors
