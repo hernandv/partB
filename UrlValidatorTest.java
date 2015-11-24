@@ -48,7 +48,7 @@ public class UrlValidatorTest extends TestCase {
 	   assertTrue(urlVal.isValid("http://www.amazon.com"));
 	   assertTrue(urlVal.isValid("http://www.amazon.org:22"));
 	   assertTrue(urlVal.isValid("http://adasd.amazon.com/test1"));
-	   assertFalse(urlVal.isValid("http://www.amazon.zw")); 
+	   assertTrue(urlVal.isValid("http://www.amazon.zw")); 
 	 //Lucky catch.  
 	 //Line 446 UrlValidator.java  return !QUERY_PATTERN.matcher(query).matches(); 
 	 //should be return QUERY_PATTERN.matcher(query).matches(); 
