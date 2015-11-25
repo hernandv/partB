@@ -92,60 +92,50 @@ public class UrlValidatorTest extends TestCase {
 	   }
    }
    
-   public void testYourSecondPartition(){
+      public void testYourSecondPartition(){
 	   System.out.println("Testing Authority Partition:");
 	   UrlValidator urlVal = new UrlValidator();
 	   
 	   String[] invalidAuthorityArr = new String[10];
 	   String[] validAuthorityArr = new String[10];
 	   
-	   if(urlVal.isValidScheme(validScheme) == false){
-		   System.out.println("Error in isValidScheme code.  isValidScheme returns false on http:// . Canceling authority tests");
+	   assertTrue(urlVal.isValidScheme("http"));
+
+	   assertTrue(urlVal.isValidAuthority(validAuthority + validPort));
+
+	   assertTrue(urlVal.isValidPath(validPath));
+
+	   //assertTrue(urlVal.isValidQuery(validQuery));
+
+	   invalidAuthorityArr[0] = "256.256.256.256";
+	   invalidAuthorityArr[1] = "1.2.3.4.5";
+	   invalidAuthorityArr[2] = ".1.2.3.4";
+	   invalidAuthorityArr[3] = "go.a1a";
+	   invalidAuthorityArr[4] = "go.1aa";
+	   invalidAuthorityArr[5] = ".aaa";
+	   invalidAuthorityArr[6] = "aaa";
+	   invalidAuthorityArr[7] = "aaa.";
+	   invalidAuthorityArr[8] = "1.2.3";
+	   invalidAuthorityArr[9] = "";
+	   
+	   for(int i = 0; i < 10; i++){
+		   String urlTry = validScheme + invalidAuthorityArr[i] + validPort + validPath + validQuery;
+		   System.out.println(urlTry);
+		   assertFalse(urlVal.isValid(urlTry));
 	   }
-	   else if(urlVal.isValidAuthority(validAuthority + validPort) == false){
-		   System.out.println("Error in isValidAuthority code.  isValidAuthority returns false on www.google.com:22 . Canceling authority tests");
-	   }
-	   else if(urlVal.isValidPath(validPath) == false){
-		   System.out.println("Error in isValidPath code.  isValidPath returns false on /test1 . Canceling authority tests");
-	   }
-	   else if(urlVal.isValidQuery(validQuery) == false){
-		   System.out.println("Error in isValidQuery code.  isValidQuery returns false on ?action=view . Canceling authority tests");
-	   }
-	   else{
-		   invalidAuthorityArr[0] = "256.256.256.256";
-		   invalidAuthorityArr[1] = "1.2.3.4.5";
-		   invalidAuthorityArr[2] = ".1.2.3.4";
-		   invalidAuthorityArr[3] = "go.a1a";
-		   invalidAuthorityArr[4] = "go.1aa";
-		   invalidAuthorityArr[5] = ".aaa";
-		   invalidAuthorityArr[6] = "aaa";
-		   invalidAuthorityArr[7] = "aaa.";
-		   invalidAuthorityArr[8] = "1.2.3";
-		   invalidAuthorityArr[9] = "";
-		   
-		   for(int i = 0; i < 10; i++){
-			   if(urlVal.isValid(validScheme + invalidAuthorityArr[i] + validPort + validPath + validQuery) == true){
-				   System.out.println("Authority: " + validScheme + invalidAuthorityArr[i] + validPort + validPath + validQuery + " failed.");
-			   }
-		   }
 		      
-		   validAuthorityArr[0] = "www.google.com";
-		   validAuthorityArr[1] = "google.com";
-		   validAuthorityArr[2] = "google.org";
-		   validAuthorityArr[3] = "255.com";
-		   validAuthorityArr[4] = "google.gov";
-		   validAuthorityArr[5] = "google.edu";
-		   validAuthorityArr[6] = "aaa";
-		   validAuthorityArr[7] = "aaa.";
-		   validAuthorityArr[8] = "1.2.3";
-		   validAuthorityArr[9] = "";
+	   validAuthorityArr[0] = "www.google.com";
+	   validAuthorityArr[1] = "google.com";
+	   validAuthorityArr[2] = "google.org";
+	   validAuthorityArr[3] = "255.com";
+	   validAuthorityArr[4] = "google.gov";
+	   validAuthorityArr[5] = "google.edu";
 		   
-		   for(int i = 0; i < 10; i++){
-			   if(urlVal.isValid(validScheme + validAuthorityArr[i] + validPort + validPath + validQuery) == false){
-				   System.out.println("Authority: " + validScheme + validAuthorityArr[i] + validPort + validPath + validQuery + " failed.");
-			   }
-		   }
+	   for(int i = 0; i < 6; i++){
+		   String urlTry = validScheme + validAuthorityArr[i] + validPort + validPath;
+		   assertTrue(urlTry, urlVal.isValid(urlTry));
 	   }
+	   
    }
    
    public void testYourThirdPartition(){
