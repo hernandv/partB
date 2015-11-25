@@ -185,59 +185,49 @@ public class UrlValidatorTest extends TestCase {
    }
    
    public void testYourFourthPartition(){
+	   String urlTry;
 	   System.out.println("Testing Path Partition:");
 	   UrlValidator urlVal = new UrlValidator();
 	   
 	   String[] invalidPathArr = new String[10];
 	   String[] validPathArr = new String[10];
 	   
-	   if(urlVal.isValidScheme(validScheme) == false){
-		   System.out.println("Error in isValidScheme code.  isValidScheme returns false on http:// . Canceling port tests");
+	   assertTrue(validScheme, urlVal.isValidScheme(validScheme));
+
+	   assertTrue(validAuthority, urlVal.isValidAuthority(validAuthority));
+
+	   assertTrue(validAuthority+validPort, urlVal.isValidAuthority(validAuthority + validPort));
+	   assertTrue(validQuery, urlVal.isValidQuery(validQuery));
+
+	   invalidPathArr[0] = "/..";
+	   invalidPathArr[1] = "/../";
+	   invalidPathArr[2] = "/..//file";
+	   invalidPathArr[3] = "/test1//file";
+	   invalidPathArr[4] = "///////";
+	   invalidPathArr[5] = "abc";
+	   invalidPathArr[6] = "_$";
+	   invalidPathArr[7] = "/^";
+	   
+	   for(int i = 0; i < 8; i++){
+		   urlTry = validScheme + "://" + validAuthority + validPort + invalidPathArr[i];
+		   assertFalse(urlTry, urlVal.isValid(urlTry));
 	   }
-	   else if(urlVal.isValidAuthority(validAuthority) == false){
-		   System.out.println("Error in isValidAuthority code.  isValidAuthority returns false on www.google.com . Canceling port tests");
-	   }
-	   else if(urlVal.isValidAuthority(validAuthority + validPort) == false){
-		   System.out.println("Error in isValidAuthority code.  isValidAuthority returns false on www.google.com:22 . Canceling authority tests");
-	   }
-	   else if(urlVal.isValidQuery(validQuery) == false){
-		   System.out.println("Error in isValidQuery code.  isValidQuery returns false on ?action=view . Canceling port tests");
-	   }
-	   else{
-		   invalidPathArr[0] = "/..";
-		   invalidPathArr[1] = "/../";
-		   invalidPathArr[2] = "/..//file";
-		   invalidPathArr[3] = "/test1//file";
-		   invalidPathArr[4] = "///////";
-		   invalidPathArr[5] = "456";
-		   invalidPathArr[6] = "abc";
-		   invalidPathArr[7] = "_$";
-		   invalidPathArr[8] = "/_#";
-		   invalidPathArr[9] = "/^";
-		   
-		   for(int i = 0; i < 10; i++){
-			   if(urlVal.isValid(validScheme + validAuthority + validPort + invalidPathArr[i] + validQuery) == true){
-				   System.out.println("Path: " + validScheme + validAuthority + validPort + invalidPathArr[i] + validQuery + " failed.");
-			   }
-		   }
 		      
-		   validPathArr[0] = "/test1";
-		   validPathArr[1] = "/t123";
-		   validPathArr[2] = "/$23";
-		   validPathArr[3] = "/test1/";
-		   validPathArr[4] = "/test1/file";
-		   validPathArr[5] = "/java/java_object_classes";
-		   validPathArr[6] = "/courses/1555028/assignments/6594488";
-		   validPathArr[7] = "/wiki/Uniform_Resource_Identifier";
-		   validPathArr[8] = "/search";
-		   validPathArr[9] = "/r/cscareerquestions";
-		   
-		   for(int i = 0; i < 10; i++){
-			   if(urlVal.isValid(validScheme + validAuthority + validPort + validPathArr[i] + validQuery) == false){
-				   System.out.println("Port: " + validScheme + validAuthority + validPort + validPathArr[i] + validQuery + " failed.");
-			   }
-		   }
-	   }
+	   validPathArr[0] = "/test1";
+	   validPathArr[1] = "/t123";
+	   validPathArr[2] = "/$23";
+	   validPathArr[3] = "/test1/";
+	   validPathArr[4] = "/test1/file";
+	   validPathArr[5] = "/java/java_object_classes";
+	   validPathArr[6] = "/courses/1555028/assignments/6594488";
+	   validPathArr[7] = "/wiki/Uniform_Resource_Identifier";
+	   validPathArr[8] = "/search";
+	   validPathArr[9] = "/r/cscareerquestions";
+	   
+	   for(int i = 0; i < 10; i++){
+		   urlTry = validScheme + "://" + validAuthority + validPort + validPathArr[i] + validQuery;
+		   assertTrue(urlTry, urlVal.isValid(urlTry));
+	   }   
    }
    
    public void testYourFithPartition(){
