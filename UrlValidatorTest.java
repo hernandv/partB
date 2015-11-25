@@ -25,11 +25,10 @@ import junit.framework.TestCase;
  * @version $Revision: 1128446 $ $Date: 2011-05-27 13:29:27 -0700 (Fri, 27 May 2011) $
  */
 public class UrlValidatorTest extends TestCase {
-
    private boolean printStatus = false;
    private boolean printIndex = false;//print index that indicates current scheme,host,port,path, query test were using.
    String validAuthority = "www.google.com";//Ones we know should be valid
-   String validScheme = "http";
+   String validScheme = "http://";
    String validPort = ":22";
    String validPath = "/test1";
    String validQuery = "?action=view";
@@ -37,8 +36,6 @@ public class UrlValidatorTest extends TestCase {
    public UrlValidatorTest(String testName) {
       super(testName);
    }
-
-   
   
    public void testManualTest()
    {
