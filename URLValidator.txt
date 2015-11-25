@@ -18,18 +18,34 @@ How did we collaborate?:
 
 
 Bug report 1:
-Name:           
+Name:     
+  Valid country domains failing validation.
 File:  
+  URLValidator.java
 Severity:       
-Priority:       
-Reported Date:  
-Reason:         
+  MEDIUM
+Priority:
+  MEDIUM  
+Reported Date:
+  25NOV2015
+Reason:    
+  Countries missing from COUNTRY_CODE_TLD in DomainValidator.java
 Status:         
-Description:    
+  OPEN
+Description:
+  All countries after Italy (alphabetically) are omitted from COUNTRY_CODE_TLD array.
 Steps to Reproduce: 
+  Call isValidAuthority("www.msn.<countryCode>"); where countryCode is
+  the top level domain for any country after Italy alphabetically. 
 Expected Results:   
+  Should return true, but will return false. 
 Debugging details:
-
+  Manual testing revealed this bug. One of the partitions obvious to our
+  team was the top-level domain since they are many and often are obscure.
+  Used the eclipse debugger to localize the fault to isValidCountryCodeTld(), 
+  which references the COUNTRY_CODE_TLD array. 
+  
+  
 Bug report 2:
 Name:           
 File:  
