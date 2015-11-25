@@ -1,0 +1,57 @@
+Daniel Bonnin
+Victor Hernandez
+Billy Kerns
+
+CS362: Final Project, Part B
+
+************************************************************************************
+This file contains bug reports and documentation of the testing we performed for 
+part B of the final project.
+
+Manual testing URLS (interesting subset)
+
+How did we partition the inputs?
+
+Names of Tests:
+
+How did we collaborate?:
+
+
+Bug report 1:
+Name:           
+File:  
+Severity:       
+Priority:       
+Reported Date:  
+Reason:         
+Status:         
+Description:    
+Steps to Reproduce: 
+Expected Results:   
+Debugging details:
+
+Bug report 2:
+Name:           
+File:  
+Severity:       
+Priority:       
+Reported Date:  
+Reason:         
+Status:         
+Description:    
+Steps to Reproduce: 
+Expected Results:   
+Debugging details:
+
+Bug report 3:
+Name:           
+File:  
+Severity:       
+Priority:       
+Reported Date:  
+Reason:         
+Status:         
+Description:    
+Steps to Reproduce: 
+Expected Results:   
+Debugging details:
