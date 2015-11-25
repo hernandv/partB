@@ -61,45 +61,34 @@ public class UrlValidatorTest extends TestCase {
 	   String[] validSchemeArr = new String[3];
 	   String[] invalidSchemeArr = new String[10];
 	   //Check to make sure the pieces we aren't testing are valid.  If false exit tests
-	   if(urlVal.isValidAuthority(validAuthority) == false){
-		   System.out.println("Error in isValidAuthority code.  isValidAuthority returns false on www.google.com . Canceling scheme tests");
-	   }
-	   else if(urlVal.isValidAuthority(validAuthority + validPort) == false){
-		   System.out.println("Error in isValidAuthority code.  isValidAuthority returns false on www.google.com:22 . Canceling scheme tests");
-	   }
-	   else if(urlVal.isValidPath(validPath) == false){
-		   System.out.println("Error in isValidPath code.  isValidPath returns false on /test1 . Canceling scheme tests");
-	   }
-	   else if(urlVal.isValidQuery(validQuery) == false){
-		   System.out.println("Error in isValidQuery code.  isValidQuery returns false on ?action=view . Canceling scheme tests");
-	   }
-	   else{//If all are valid begin test
-		   validSchemeArr[0] = "http://";//Known valid schemes
-		   validSchemeArr[1] = "ftp://";
-		   validSchemeArr[2] = "https://";
+	   assertTrue(urlVal.isValidAuthority(validAuthority + validPort));
+	   assertTrue(urlVal.isValidAuthority(validAuthority));
+	   assertTrue(urlVal.isValidPath(validPath));
+	   assertTrue(urlVal.isValidQuery(validQuery));
+
+	   validSchemeArr[0] = "http://";//Known valid schemes
+	   validSchemeArr[1] = "ftp://";
+	   validSchemeArr[2] = "https://";
 	
-		   for(int i=0; i < 3; i++){//Check each valid scheme combined with the other vaild parts.  If it returns false we have a bug
-			   if(urlVal.isValid(validSchemeArr[i] + validAuthority + validPort + validPath + validQuery) == false){
-				   System.out.println("Scheme: " + validSchemeArr[i] + validAuthority + validPort + validPath + validQuery + " failed.");
-			   }
-		   }
-		   //Invalid schmes
-		   invalidSchemeArr[0] = "https";
-		   invalidSchemeArr[1] = "data://";
-		   invalidSchemeArr[2] = "zzzzz://";
-		   invalidSchemeArr[3] = "ftp:/";
-		   invalidSchemeArr[4] = "ftp";
-		   invalidSchemeArr[5] = "ftp:://";
-		   invalidSchemeArr[6] = "ftp:";
-		   invalidSchemeArr[7] = "https:///";
-		   invalidSchemeArr[8] = "https:$/";
-		   invalidSchemeArr[9] = "https//:";
+	   //Check known valid Schemes
+	   for(int i=0; i < 3; i++){
+		   String urlTry = validSchemeArr[i] + validAuthority + validPort + validPath;
+		   assertTrue(urlTry, urlVal.isValid(urlTry));
+	   }
+	   //Invalid schmes
+	   invalidSchemeArr[0] = "https";
+	   invalidSchemeArr[1] = "data://";
+	   invalidSchemeArr[2] = "zzzzz://";
+	   invalidSchemeArr[3] = "ftp:/";
+	   invalidSchemeArr[4] = "ftp";
+	   invalidSchemeArr[5] = "ftp:://";
+	   invalidSchemeArr[6] = "ftp:";
+	   invalidSchemeArr[7] = "https:///";
+	   invalidSchemeArr[8] = "https:$/";
+	   invalidSchemeArr[9] = "https//:";
 		   
-		   for(int i = 0; i < 10; i++){//Same as last for loop but using invalid scheme and checking to see if ends up being true
-			   if(urlVal.isValid(invalidSchemeArr[i] + validAuthority + validPort + validPath + validQuery) == true){
-				   System.out.println("Scheme " + invalidSchemeArr[i] + validAuthority + validPort + validPath + validQuery + " failed.");
-			   }
-		   }
+	   for(int i = 0; i < 10; i++){//Same as last for loop but using invalid scheme and checking to see if ends up being true
+		   assertFalse(urlVal.isValid(invalidSchemeArr[i] + validAuthority + validPort + validPath + validQuery));
 	   }
    }
    
