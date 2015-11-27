@@ -47,17 +47,47 @@ Debugging details:
   
   
 Bug report 2:
-Name:           
+Name: 
+  Valid query causes false invalid
 File:  
+  UrlValidator.java
 Severity:       
-Priority:       
-Reported Date:  
-Reason:         
+  HIGH
+Priority:
+  High
+Reported Date:
+  27NOV2015
+Reason:    
+  isValidQuery() boolean return value is negated to opposite value.
 Status:         
-Description:    
+  Open
+Description:
+  Query regex pattern matches nothing. Only returns true on empty query.
 Steps to Reproduce: 
+  call isValid("http://www.google.com:22/test1?action=view");
 Expected Results:   
+  Should return true.
 Debugging details:
+  We tested known correct/incorrect queries appended to known correct
+  URL strings on the isValid() function as part of testing the query
+  partition of URLs. 
+  
+  We only found this bug due to isValid() failing with known 
+  correct queries. 
+  
+  Using reserved characters as test negative query strings was 
+  problematic. The URL regex will process the query as part of
+  the path unless its first character is a '?'. Also, the regex for 
+  checking query strings in URLValidator matches all characters except 
+  newline, so it does not reject reserved characters.
+  
+  It took a code inspection to localize the fault to this line
+  in URLValidator.java: return !QUERY_PATTERN.matcher(query).matches();
+  
+  Removing the negation operator fixed the bug, though incorrect 
+  queries are still interpreted as part of the path if the '?' is
+  omitted. 
+  
 
 Bug report 3:
 Name:           
