@@ -231,59 +231,51 @@ public class UrlValidatorTest extends TestCase {
    }
    
    public void testYourFithPartition(){
+	   String urlTry;
 	   System.out.println("Testing Query Partition:");
 	   UrlValidator urlVal = new UrlValidator();
 	   
-	   String[] invalidQueryArr = new String[10];
-	   String[] validQueryArr = new String[10];
-	   
-	   if(urlVal.isValidScheme(validScheme) == false){
-		   System.out.println("Error in isValidScheme code.  isValidScheme returns false on http:// . Canceling port tests");
+	   assertTrue(validScheme, urlVal.isValidScheme(validScheme));
+
+	   assertTrue(validAuthority, urlVal.isValidAuthority(validAuthority));
+
+	   assertTrue(validAuthority + validPort, urlVal.isValidAuthority(validAuthority + validPort));
+
+	   assertTrue(validPath, urlVal.isValidPath(validPath));
+
+	   String[] invalidQueryArr = {
+	   "?!!!!@#$#$%^%^&%*&()..",
+	   "?/../",
+	   "?/..//file",
+	   "?/test1//file",
+	   "?///////",
+	   "?456/@",
+	   "?abc",
+	   "?_$",
+	   "?/_#",
+	   "?/^"
+	   };
+	   for(int i = 0; i < invalidQueryArr.length; i++){
+		   urlTry = validScheme + "://" + validAuthority + validPort + validPath + invalidQueryArr[i];
+		   assertFalse(urlTry + Integer.toString(i), urlVal.isValid(urlTry));
 	   }
-	   else if(urlVal.isValidAuthority(validAuthority) == false){
-		   System.out.println("Error in isValidAuthority code.  isValidAuthority returns false on www.google.com . Canceling port tests");
-	   }
-	   else if(urlVal.isValidAuthority(validAuthority + validPort) == false){
-		   System.out.println("Error in isValidAuthority code.  isValidAuthority returns false on www.google.com:22 . Canceling authority tests");
-	   }
-	   else if(urlVal.isValidPath(validPath) == false){
-		   System.out.println("Error in isValidPath code.  isValidPath returns false on /test1 . Canceling port tests");
-	   }
-	   else{
-		  /* invalidQueryArr[0] = "/..";
-		   invalidQueryArr[1] = "/../";
-		   invalidQueryArr[2] = "/..//file";
-		   invalidQueryArr[3] = "/test1//file";
-		   invalidQueryArr[4] = "///////";
-		   invalidQueryArr[5] = "456";
-		   invalidQueryArr[6] = "abc";
-		   invalidQueryArr[7] = "_$";
-		   invalidQueryArr[8] = "/_#";
-		   invalidQueryArr[9] = "/^";
-		   
-		   for(int i = 0; i < 10; i++){
-			   if(urlVal.isValid(validScheme + validAuthority + validPort + validPath + validQuery) == true){
-				   System.out.println("Port: " + validScheme + validAuthority + validPort + validPath + invalidQueryArr[i] + " failed.");
-			   }
-		   }
-		     */
-		   validQueryArr[0] = "?action=view";
-		   validQueryArr[1] = "?action=edit&mode=up";
-		   validQueryArr[2] = "?newwindow=1&q=url+query";
-		   validQueryArr[3] = "?module_item_id=16435218";
-		   validQueryArr[4] = "?some_action=Some_thiNG";
-		   validQueryArr[5] = "?1111=22222";
-		   validQueryArr[6] = "?royals=world_series_champs";
-		   validQueryArr[7] = "?ideas=NoNe";
-		   validQueryArr[8] = "?last_ONE=false";
-		   validQueryArr[9] = "?LAST_one=true";
-		   
-		   for(int i = 0; i < 10; i++){
-			   if(urlVal.isValid(validScheme + "://" + validAuthority + validPort + validPath + validQuery) == false){
-				   System.out.println("Query: " + validScheme + "://" + validAuthority + validPort + validPath + validQueryArr[i] + " failed.");
-			   }
-		   }
-	   }
+
+	   String[] validQueryArr = {
+	   "?action=view",
+	   "?action=edit&mode=up",
+	   "?newwindow=1&q=url+query",
+	   "?module_item_id=16435218",
+	   "?some_action=Some_thiNG",
+	   "?1111=22222",
+	   "?royals=world_series_champs",
+	   "?ideas=NoNe",
+	   "?last_ONE=false",
+	   "?LAST_one=true",
+	   };
+	   for(int i = 0; i < validQueryArr.length; i++){
+		   urlTry = validScheme + "://" + validAuthority + validPort + validPath + validQueryArr[i];
+		   assertTrue(urlTry, urlVal.isValid(urlTry));
+	   } 
    }
    
    public void testIsValid()
