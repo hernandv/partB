@@ -90,14 +90,43 @@ Debugging details:
   
 
 Bug report 3:
-Name:           
+Name: 
+  Port numbers higher than 99 are invalidated          
 File:  
-Severity:       
-Priority:       
-Reported Date:  
-Reason:         
+  UrlValidator.java
+Severity:
+  MEDIUM
+Priority:
+  MEDIUM  
+Reported Date:
+  28NOV2015
+Reason:    
+  PORT_REGEX invalides port numbers with > 3 digits.
 Status:         
-Description:    
+  Open
+Description:
+  The isValidAuthority() function returns false 
+  due to PORT_REGEX failing to match > 3 digits.
 Steps to Reproduce: 
+  Call UrlValidator.isValid("http://www.amazon.com:2222");
 Expected Results:   
+  Should return true. Current bug results in this returning false.
 Debugging details:
+  In our test of the port "partition", we established the 
+  upper boundary of port numbers as the max 16 bit unsigned int, 
+  which is 65535. 
+  
+  It seemed that the length of the port string was the issue. 
+  
+  Using the Eclipse debugger, we localized the fault to 
+  the PORT_REGEX on line 158 of UrlValidator.java, which
+  enforces a maximum of 3 digits. 
+  
+  Correcting this regex to allow 5 digits would validate
+  all valid ports, but also permit some false positives
+  (eg. 65535 < portNum < 99999). 
+  
+  This may or may not be out of scope for our concerns, 
+  however. 
+  
+  
