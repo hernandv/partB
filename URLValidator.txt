@@ -21,7 +21,7 @@ Bug report 1:
 Name:     
   Valid country domains failing validation.
 File:  
-  URLValidator.java
+  DomainValidator.java
 Severity:       
   MEDIUM
 Priority:
