@@ -141,46 +141,48 @@ public class UrlValidatorTest extends TestCase {
    public void testYourThirdPartition(){
 	   System.out.println("Testing Port Partition:");
 	   UrlValidator urlVal = new UrlValidator();
-	   
-	   String[] invalidPortArr = new String[10];
-	   String[] validPortArr = new String[10];
-	   
+	   String urlTry;
 	   assertTrue(urlVal.isValidScheme("http"));
 
 	   assertTrue(urlVal.isValidAuthority(validAuthority));
 
 	   assertTrue(urlVal.isValidPath(validPath));
 
-	   //assertTrue(urlVal.isValidQuery(validQuery));
-
-	   invalidPortArr[0] = ":123456";
-	   invalidPortArr[1] = ":1b3";
-	   invalidPortArr[2] = ":b21";
-	   invalidPortArr[3] = ":.11111";
-	   invalidPortArr[4] = ":ljljl";
-	   invalidPortArr[5] = ":-1";
-	   invalidPortArr[6] = ":-200";
-	   invalidPortArr[7] = ":-b.";
-	   invalidPortArr[8] = ":1234567";
-	   invalidPortArr[9] = ":-0";
+	   assertTrue(urlVal.isValidQuery(validQuery));
+	   
+	   String[] invalidPortArr = {
+	   ":123456",
+	   ":655365",
+	   ":1b3",
+	   ":b21",
+	   ":.11111",
+	   ":ljljl",
+	   ":-1",
+	   ":-200",
+	   ":-b.",
+	   ":1234567",
+	   ":-0"};
 		   
-	   for(int i = 0; i < 10; i++){
-		   assertFalse(urlVal.isValid(validScheme + validAuthority + invalidPortArr[i] + validPath + validQuery));
+	   for(int i = 0; i < invalidPortArr.length; i++){
+		   urlTry = validScheme + "://" + validAuthority + invalidPortArr[i] + validPath;
+		   assertFalse(urlTry, urlVal.isValid(urlTry));
 	   }
-	      
-	   validPortArr[0] = ":22";
-	   validPortArr[1] = ":65535";
-	   validPortArr[2] = ":0";
-	   validPortArr[3] = ":65636";
-	   validPortArr[4] = ":1";
-	   validPortArr[5] = ":12";
-	   validPortArr[6] = ":123";
-	   validPortArr[7] = ":1234";
-	   validPortArr[8] = ":12345";
-	   validPortArr[9] = ":11111";
-		   
-	   for(int i = 0; i < 10; i++){
-		   assertTrue(urlVal.isValid(validScheme + validAuthority + validPortArr[i] + validPath + validQuery));
+	   
+	   String[] validPortArr = {
+	   ":22",
+	   ":65535",
+	   ":0",
+	   ":65534",
+	   ":1",
+	   ":12",
+	   ":123",
+	   ":1234",
+	   ":12345",
+	   ":11111",
+	   };
+	   for(int i = 0; i < validPortArr.length; i++){
+		   urlTry = validScheme + "://" + validAuthority + validPortArr[i] + validPath;
+		   assertTrue(urlTry, urlVal.isValid(urlTry));
 	   }   
    }
    
