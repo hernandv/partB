@@ -5,17 +5,132 @@ Billy Kerns
 CS362: Final Project, Part B
 
 ************************************************************************************
-This file contains bug reports and documentation of the testing we performed for 
-part B of the final project.
+This file contains bug reports and documentation of the testing we performed for part B of the final project.
 
-Manual testing URLS (interesting subset)
+Methodology of testing:
+	Manual
+
+Manually tested urls:					Expected	Actual
+	http://www.amazon.com				True		True
+	http://www.amazon.org:22			True		True
+	http://adasd.amazon.com/test1		True		True
+	http://www.amazon.zw				True		False
+	http://www.amazon.gov?action=view	True		False
+
+Note on http://www.amazon.zw:
+	This bug was discovered while looking over the code.  We 	did not just luck into manually testing that url and 	finding the bug.
+
+Methodology of testing:
+	Partition
 
 How did we partition the inputs?
+	Our partitions were authority, scheme, port, path, and 	query.  For each partition we had a known valid url that 	would test only that particular partion with a series of 	valid and invalid parts.  For example for the authoriy 	partition the url being test would look like this: 	validScheme + validAuthority||invalidAuthority +  	validPort + validPath + validQuery.
 
 Names of Tests:
+	1.  testYourFirstPartition()
+	Valid schemes tested:			Expected	Actual
+		http://					True		True
+		ftp://					True		True
+		https://				True		True
+
+	Invalid schemes tested:
+		https					False		False
+		data://					False		False
+		zzzzz://				False		False
+		ftp:/					False		False
+		ftp						False		False
+		ftp:://					False		False
+		ftp:					False		False
+		https:///				False		False
+		https:$/				False		False
+		https//:				False		False
+
+	2.  testYourSecondPartition()
+	Valid authorities tested:		Expected	Actual
+		www.google.com				True		True
+		google.com					True		True
+		google.org					True		True
+		255.com						True		True
+		google.gov					True		True
+		google.edu					True		True
+
+	Invalid authorities tested:
+		256.256.256.256				False		True
+		1.2.3.4.5					False		False
+		.1.2.3.4					False		False
+		go.a1a						False		False
+		go.1aa						False		False
+		.aaa						False		False
+		aaa							False		False
+		aaa.						False		False
+		1.2.3						False		False
+		empty string				False		False
+
+	3.  testYourThirdPartition()
+	Valid ports tested:				Expected	Actual
+		:22						True		True
+		:65535					True		False
+		:0						True		True
+		:6566					True		False
+		:1						True		True
+		:12						True		True
+		:123					True		True
+		:1234					True		False
+		:12345					True		False
+		:11111					True		False
+	
+	Invalid ports tested:
+		:123456					False		False
+		:1b3					False		False
+		:b21					False		False
+		:.11111					False		False
+		:ljljl					False		False
+		:-1						False		False
+		:-200					False		False
+		:-b.					False		False
+		:1234567				False		False
+		:-0						False		False
+
+	4.  testYourFourthPartiton()
+	Valid paths tested:				Expected	Actual
+		/test1					True		True
+		/t123					True		True
+		/$23					True		True
+		/test1/					True		True
+		test1/file				True		True
+	/java/java_object_classes		True		True
+	/courses/1555028/assignments/6594488	True		True
+	/wiki/Uniform_Resource_Identifier	True		True
+		/search					True		True
+		/r/cscareerquestions			True		True
+	
+	Invalid paths tested:
+		/..						False		False
+		/../					False		False
+		/..//file				False		False
+		/test1//file			False		False
+		///////					False		False
+		456						False		False
+		abc						False		False
+		_$						False		False
+		_#						False		False
+		///^						False		False
+
+	5.  testYourFithPartition()
+	Valid queries tested:				Expected	Actual
+		?action=view				True		False
+		?action=edit&mode=up		True		False
+		?newwindow=1&q=url+query	True		False
+		?module_item_id=16435218	True		False
+		?some_action=Some_thiNG		True		False
+		?1111=22222					True		False
+		?royals=world_series_champs	True		False
+		?ideas=NoNe					True		False
+		?last_ONE=false				True		False
+		?LAST_one=true				True		False
 
 How did we collaborate?:
-
+	We primarily used email to communicate, divvy up tasks, 	and to share updates.  In addition to this we used Github 	to work on the files involved with this project.  We 	didn't really have set tasks for each member.  Instead we 	each looked at what needed to be done and did it.  After 	sharing what we had completed the other members would go 	over offering their input on anything that needed to be 	changed.
 
 Bug report 1:
 Name:     
