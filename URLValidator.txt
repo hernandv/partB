@@ -13,22 +13,25 @@ Methodology of testing:
 Manually tested urls:					Expected	Actual
 	http://www.amazon.com				True		True
 	http://www.amazon.org:22			True		True
-	http://adasd.amazon.com/test1		True		True
+	http://adasd.amazon.com/test1			True		True
 	http://www.amazon.zw				True		False
-	http://www.amazon.gov?action=view	True		False
+	http://www.amazon.gov?action=view		True		False
 
 Note on http://www.amazon.zw:
-	This bug was discovered while looking over the code.  We 	did not just luck into manually testing that url and 	finding the bug.
+	This bug was discovered while looking over the code.  We did not just luck into manually testing that url and 	finding the bug.
 
 Methodology of testing:
 	Partition
 
 How did we partition the inputs?
-	Our partitions were authority, scheme, port, path, and 	query.  For each partition we had a known valid url that 	would test only that particular partion with a series of 	valid and invalid parts.  For example for the authoriy 	partition the url being test would look like this: 	validScheme + validAuthority||invalidAuthority +  	validPort + validPath + validQuery.
+	Our partitions were authority, scheme, port, path, and 	query.  For each partition we had a known valid url that 	would test only that particular partion with a series of valid and invalid parts.  For example for the authoriy partition the url being test would look like this: validScheme + validAuthority||invalidAuthority + validPort + validPath + validQuery.
+
+Did you use any of Agan’s principle in debugging URLValidator?:
+	Yes. We used Agan’s principles to find bugs in URLValidator. The first rule is to understand the system and the first thing we did was study how URLValidatorTest worked by manually going through the source code. Secondly, we were asked to write our own tests to debug URLValidator and In doing so, we spent some time studying the isValid method, and where the URL validity checking methods came from. By developing these tests, we further explored the system and were able to identify and localize bugs. Agan’s second rule is to “Make it fail”. In debugging, we marked the known valid and invalid URL components that resulted in failures. We then stimulated these failures by manually testing similar URL components and made notes of the results. These results were used then used to develop program based testing. As we were not tasked with fixing the bugs, many of Agan's Principles were not directly applicable. However we were able to verify that bugs were found by indirectly applying Agan's Principles such as divide and conquer, and by working on one bug at a time to more efficiently work as a group.
 
 Names of Tests:
 	1.  testYourFirstPartition()
-	Valid schemes tested:			Expected	Actual
+	Valid schemes tested:				Expected	Actual
 		http://					True		True
 		ftp://					True		True
 		https://				True		True
@@ -38,7 +41,7 @@ Names of Tests:
 		data://					False		False
 		zzzzz://				False		False
 		ftp:/					False		False
-		ftp						False		False
+		ftp					False		False
 		ftp:://					False		False
 		ftp:					False		False
 		https:///				False		False
@@ -46,8 +49,8 @@ Names of Tests:
 		https//:				False		False
 
 	2.  testYourSecondPartition()
-	Valid authorities tested:		Expected	Actual
-		www.google.com				True		True
+	Valid authorities tested:				Expected	Actual
+		www.google.com					True		True
 		google.com					True		True
 		google.org					True		True
 		255.com						True		True
@@ -55,25 +58,25 @@ Names of Tests:
 		google.edu					True		True
 
 	Invalid authorities tested:
-		256.256.256.256				False		True
+		256.256.256.256					False		True
 		1.2.3.4.5					False		False
 		.1.2.3.4					False		False
 		go.a1a						False		False
 		go.1aa						False		False
 		.aaa						False		False
-		aaa							False		False
+		aaa						False		False
 		aaa.						False		False
 		1.2.3						False		False
-		empty string				False		False
+		empty string					False		False
 
 	3.  testYourThirdPartition()
 	Valid ports tested:				Expected	Actual
-		:22						True		True
+		:22					True		True
 		:65535					True		False
-		:0						True		True
+		:0					True		True
 		:6566					True		False
-		:1						True		True
-		:12						True		True
+		:1					True		True
+		:12					True		True
 		:123					True		True
 		:1234					True		False
 		:12345					True		False
@@ -85,11 +88,11 @@ Names of Tests:
 		:b21					False		False
 		:.11111					False		False
 		:ljljl					False		False
-		:-1						False		False
+		:-1					False		False
 		:-200					False		False
 		:-b.					False		False
 		:1234567				False		False
-		:-0						False		False
+		:-0					False		False
 
 	4.  testYourFourthPartiton()
 	Valid paths tested:				Expected	Actual
@@ -98,18 +101,18 @@ Names of Tests:
 		/$23					True		True
 		/test1/					True		True
 		test1/file				True		True
-	/java/java_object_classes		True		True
-	/courses/1555028/assignments/6594488	True		True
-	/wiki/Uniform_Resource_Identifier	True		True
+	/java/java_object_classes			True		True
+	/courses/1555028/assignments/6594488		True		True
+	/wiki/Uniform_Resource_Identifier		True		True
 		/search					True		True
 		/r/cscareerquestions			True		True
 	
 	Invalid paths tested:
 		/..						False		False
-		/../					False		False
-		/..//file				False		False
-		/test1//file			False		False
-		///////					False		False
+		/../						False		False
+		/..//file					False		False
+		/test1//file					False		False
+		///////						False		False
 		456						False		False
 		abc						False		False
 		_$						False		False
@@ -119,24 +122,26 @@ Names of Tests:
 	5.  testYourFithPartition()
 	Valid queries tested:				Expected	Actual
 		?action=view				True		False
-		?action=edit&mode=up		True		False
-		?newwindow=1&q=url+query	True		False
-		?module_item_id=16435218	True		False
-		?some_action=Some_thiNG		True		False
-		?1111=22222					True		False
-		?royals=world_series_champs	True		False
-		?ideas=NoNe					True		False
+		?action=edit&mode=up			True		False
+		?newwindow=1&q=url+query		True		False
+		?module_item_id=16435218		True		False
+		?some_action=Some_thiNG			True		False
+		?1111=22222				True		False
+		?royals=world_series_champs		True		False
+		?ideas=NoNe				True		False
 		?last_ONE=false				True		False
 		?LAST_one=true				True		False
 
 How did we collaborate?:
-	We primarily used email to communicate, divvy up tasks, 	and to share updates.  In addition to this we used Github 	to work on the files involved with this project.  We 	didn't really have set tasks for each member.  Instead we 	each looked at what needed to be done and did it.  After 	sharing what we had completed the other members would go 	over offering their input on anything that needed to be 	changed.
+	We primarily used email to communicate, divvy up tasks, and to share updates.  In addition to this we used Github 	to work on the files involved with this project.  We didn't really have set tasks for each member.  Instead we 	each looked at what needed to be done and did it.  After sharing what we had completed the other members would go over offering their input on anything that needed to be changed.
 
 Bug report 1:
 Name:     
   Valid country domains failing validation.
 File:  
   DomainValidator.java
+Line:
+  358
 Severity:       
   MEDIUM
 Priority:
@@ -166,6 +171,8 @@ Name:
   Valid query causes false invalid
 File:  
   UrlValidator.java
+Line:
+  446
 Severity:       
   HIGH
 Priority:
@@ -196,7 +203,7 @@ Debugging details:
   checking query strings in URLValidator matches all characters except 
   newline, so it does not reject reserved characters.
   
-  It took a code inspection to localize the fault to this line
+  It took a code inspection to localize the fault to line 446
   in URLValidator.java: return !QUERY_PATTERN.matcher(query).matches();
   
   Removing the negation operator fixed the bug, though incorrect 
@@ -209,6 +216,8 @@ Name:
   Port numbers higher than 99 are invalidated          
 File:  
   UrlValidator.java
+Line:
+  158
 Severity:
   MEDIUM
 Priority:
